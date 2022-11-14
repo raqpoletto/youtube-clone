@@ -3,13 +3,13 @@ import { StyledRegisterVideo } from "./styles";
 
 // Whiteboarding
 // Custom Hook
-
 function useForm(propsDoForm) {
   const [values, setValues] = React.useState(propsDoForm.initialValues);
 
   return {
     values,
     handleChange: (evento) => {
+      console.log(evento.target);
       const value = evento.target.value;
       const name = evento.target.name;
       setValues({
@@ -25,44 +25,56 @@ function useForm(propsDoForm) {
 
 export default function RegisterVideo() {
   const formCadastro = useForm({
-    initialValues: { titulo: " ", url: " " },
+    initialValues: { titulo: "Frost punk", url: "https://youtube.." },
   });
-  const [isModalOpen, setIsModalOpen] = React.useState(true);
+  const [formVisivel, setFormVisivel] = React.useState(true);
+  /*
+    ## O que precisamos para o form funcionar?
+    - pegar os dados, que precisam vir do state
+        - titulo
+        - url do vídeo 
+    - precisamos ter um onSubmit do nosso form
+    - Limpar o formulário após o Submit
+    */
 
   return (
     <StyledRegisterVideo>
-      <button className="add-video" onClick={() => setIsModalOpen(true)}>
+      <button className="add-video" onClick={() => setFormVisivel(true)}>
         +
       </button>
-      {isModalOpen ? (
+      {/* Ternário */}
+      {/* Operadores de Curto-circuito */}
+      {formVisivel ? (
         <form
           onSubmit={(evento) => {
             evento.preventDefault();
+            console.log(formCadastro.values);
 
-            setIsModalOpen(false);
+            setFormVisivel(false);
             formCadastro.clearForm();
           }}
         >
           <div>
             <button
+              type="button"
               className="close-modal"
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => setFormVisivel(false)}
             >
               X
             </button>
             <input
-              placeholder="Video title"
-              name="title"
-              value={formCadastro.values.title}
+              placeholder="Titulo do vídeo"
+              name="titulo"
+              value={formCadastro.values.titulo}
               onChange={formCadastro.handleChange}
             />
             <input
-              placeholder="Video URL"
+              placeholder="URL"
               name="url"
               value={formCadastro.values.url}
               onChange={formCadastro.handleChange}
             />
-            <button type="submit">Register</button>
+            <button type="submit">Cadastrar</button>
           </div>
         </form>
       ) : (
@@ -71,3 +83,8 @@ export default function RegisterVideo() {
     </StyledRegisterVideo>
   );
 }
+
+// [X] Falta o botão para adicionar
+// [X] Modal
+// -> [X] Precisamos controlar o state
+// -> Formulário em si
